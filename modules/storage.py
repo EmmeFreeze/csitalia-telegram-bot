@@ -47,6 +47,7 @@ def get_user_solutions ( username ):
     pname,\
     pdescription, \
     username, \
+    solution_url,\
     sdatetime, \
     programming_language\
     FROM problem INNER JOIN solution \
@@ -68,9 +69,13 @@ def add_problem ( name, description, difficulty ):
   val = ( name, description, difficulty )
   mycursor.execute(sql, val)
 
-# Crea db se non esiste
-init_db ()
+def add_solution ( username, programming_language, solution_url, problem_id ):
+  sql = "INSERT INTO solution ( username, \
+    programming_language\
+    problem_id, \
+    solution_url, \
+    pdatetime ) \
+    VALUES ( %s, %s, %s, %s, NOW() );"
 
-print ( add_problem ( "Problema test", "testing problem 2", "easy" ) )
-print ( get_current_problem ( ) )
-print ( get_user_solutions ( 'informaticage' ) )
+  val = ( username, programming_language, solution_url, problem_id )
+  mycursor.execute(sql, val)
