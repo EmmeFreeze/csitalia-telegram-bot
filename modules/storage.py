@@ -30,13 +30,14 @@ def init_db ( ):
     id INT NOT NULL AUTO_INCREMENT, \
     username VARCHAR ( 255 ) NOT NULL, \
     sdatetime DATETIME, \
+    solution_url VARCHAR ( 1024 ) NOT NULL, \
     programming_language VARCHAR ( 255 ), \
     problem_id INT, \
     FOREIGN KEY ( problem_id ) REFERENCES problem ( id ), \
     PRIMARY KEY ( id ) ); " )
 
 def get_current_problem ( ):
-  sql = "SELECT pname, pdescription, pdifficulty, pdatetime FROM problem;"
+  sql = "SELECT id, pname, pdescription, pdifficulty, pdatetime FROM problem;"
   mycursor.execute(sql)
   current_problem = mycursor.fetchall()
 
@@ -51,10 +52,9 @@ def get_user_solutions ( username ):
     sdatetime, \
     programming_language\
     FROM problem INNER JOIN solution \
-    ON problem.id = solution.problem_id WHERE username='%s';"
+    ON problem.id = solution.problem_id WHERE USERNAME LIKE " + "'%" + username + "%'"
 
-    val = ( username )
-    mycursor.execute(sql, val)
+    mycursor.execute(sql)
     user_solutions = mycursor.fetchall()
 
     return user_solutions
@@ -71,10 +71,10 @@ def add_problem ( name, description, difficulty ):
 
 def add_solution ( username, programming_language, solution_url, problem_id ):
   sql = "INSERT INTO solution ( username, \
-    programming_language\
-    problem_id, \
+    programming_language, \
     solution_url, \
-    pdatetime ) \
+    problem_id, \
+    sdatetime ) \
     VALUES ( %s, %s, %s, %s, NOW() );"
 
   val = ( username, programming_language, solution_url, problem_id )
