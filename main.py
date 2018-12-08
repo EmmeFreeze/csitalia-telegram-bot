@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
-
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 import datetime
@@ -37,11 +35,10 @@ def echo(bot, update):
 	if flag == True:
 		# answer received
 		link = update.message.text
-		chat_id = update.message.chat_id
 		from_user = update.message.from_user['username']
 		date = (datetime.datetime.now()+ datetime.timedelta(hours=1)).strftime("%y-%m-%d-%H-%M")
 
-		update.message.reply_text("date: " + date+ "\nfrom_user: " + str(from_user) + "\nchat_id: " + str(chat_id) + "\nrisposta: " +link)
+		update.message.reply_text("date: " + date+ "\nfrom_user: " + str(from_user) + "\nrisposta: " +link)
 		flag = False
 	else:
 		update.message.reply_text("Non inviare più volte la risposta!\nPer aggiornare la risposta usa il comando /update {link}")
